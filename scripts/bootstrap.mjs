@@ -113,7 +113,7 @@ function portraitSvg(rowsTxt) {
     const rowY = artTop + ry * CELL_H;
     const delay = ry * STAGGER;
     parts.push(
-      `<clipPath id="wipe${ry}"><rect x="${PAD}" y="${rowY}" width="0" height="${CELL_H}"><animate attributeName="width" from="0" to="${ART_W}" dur="${ROW_DUR}s" begin="${delay.toFixed(3)}s" fill="freeze"/></rect></clipPath>`,
+      `<clipPath id="wipe${ry}"><rect x="${PAD}" y="${rowY}" width="${ART_W}" height="${CELL_H}"><animate attributeName="width" from="0" to="${ART_W}" dur="${ROW_DUR}s" begin="${delay.toFixed(3)}s" fill="freeze"/></rect></clipPath>`,
     );
   });
   parts.push("</defs>");
@@ -124,7 +124,7 @@ function portraitSvg(rowsTxt) {
       `<text x="${PAD}" y="${y.toFixed(2)}" fill="#c9d1d9" font-size="${fontSize.toFixed(2)}" xml:space="preserve" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" clip-path="url(#wipe${ry})">${esc(line)}</text>`,
     );
     parts.push(
-      `<rect x="${PAD}" y="${(artTop + ry * CELL_H + 2).toFixed(2)}" width="7" height="${CELL_H - 4}" fill="#c9d1d9"><animate attributeName="x" from="${PAD}" to="${PAD + ART_W}" dur="${ROW_DUR}s" begin="${delay.toFixed(3)}s" fill="freeze"/><animate attributeName="opacity" from="1" to="0" dur="0.04s" begin="${(delay + ROW_DUR).toFixed(3)}s" fill="freeze"/></rect>`,
+      `<rect x="${PAD}" y="${(artTop + ry * CELL_H + 2).toFixed(2)}" width="7" height="${CELL_H - 4}" fill="#c9d1d9" opacity="0"><animate attributeName="x" from="${PAD}" to="${PAD + ART_W}" dur="${ROW_DUR}s" begin="${delay.toFixed(3)}s" fill="freeze"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.08;0.88;1" dur="${ROW_DUR}s" begin="${delay.toFixed(3)}s" fill="freeze"/></rect>`,
     );
   });
   const statusY = TITLEBAR_H + ART_H + PAD * 0.55 + 18;
@@ -382,8 +382,22 @@ function writeReadme() {
 
 async function main() {
   fs.mkdirSync(path.join(ROOT, "data"), { recursive: true });
-  const portrait = portraitSvg(proceduralRows());
+  const photo = path.join(ROOT, "source-photo.jpg");
+  let rows = proceduralRows();
+  if (fs.existsSync(photo)) {
+    const { prepPhoto, gridFromLuma } = await import("./prep_ascii_photo.mjs");
+    const buf = await prepPhoto(photo, path.join(ROOT, "source-prepped.png"));
+    rows = gridFromLuma(buf);
+    console.log("portrait from source-photo.jpg");
+  } else {
+    console.log("no source-photo.jpg — procedural portrait");
+  }
+  const portrait = portraitSvg(rows);
   fs.writeFileSync(path.join(ROOT, "portrait-ascii.svg"), portrait);
+  if (process.argv.includes("--portrait")) {
+    console.log("portrait-ascii.svg", portrait.length);
+    return;
+  }
   const card = infoCardSvg();
   fs.writeFileSync(path.join(ROOT, "info-card.svg"), card);
   let days;

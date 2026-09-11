@@ -145,7 +145,7 @@ def build_svg(rows_txt: list[str]) -> str:
         else:
             parts.append(
                 f'<clipPath id="wipe{ry}">'
-                f'<rect x="{PAD}" y="{row_y}" width="0" height="{CELL_H}">'
+                f'<rect x="{PAD}" y="{row_y}" width="{ART_W}" height="{CELL_H}">'
                 f'<animate attributeName="width" from="0" to="{ART_W}" dur="{ROW_DUR}s" '
                 f'begin="{delay:.3f}s" fill="freeze"/>'
                 f"</rect></clipPath>"
@@ -163,11 +163,11 @@ def build_svg(rows_txt: list[str]) -> str:
         )
         if not STATIC:
             parts.append(
-                f'<rect x="{PAD}" y="{art_top + ry * CELL_H + 2:.2f}" width="7" height="{CELL_H - 4}" fill="{CURSOR}">'
+                f'<rect x="{PAD}" y="{art_top + ry * CELL_H + 2:.2f}" width="7" height="{CELL_H - 4}" fill="{CURSOR}" opacity="0">'
                 f'<animate attributeName="x" from="{PAD}" to="{PAD + ART_W}" dur="{ROW_DUR}s" '
                 f'begin="{delay:.3f}s" fill="freeze"/>'
-                f'<animate attributeName="opacity" from="1" to="0" dur="0.04s" '
-                f'begin="{delay + ROW_DUR:.3f}s" fill="freeze"/>'
+                f'<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.08;0.88;1" dur="{ROW_DUR}s" '
+                f'begin="{delay:.3f}s" fill="freeze"/>'
                 f"</rect>"
             )
 
