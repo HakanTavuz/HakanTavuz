@@ -1,21 +1,81 @@
 {
   "username": "HakanTavuz",
-  "generated_at": "2026-09-11T17:33:31.758Z",
+  "generated_at": "2026-09-11T17:38:03Z",
   "range": {
     "start": "2025-09-07",
     "end": "2026-09-11"
   },
-  "total_contributions": 2,
+  "total_contributions": 4,
+  "active_days": 2,
+  "avg_per_active_day": 2.0,
   "current_streak": {
-    "length": 1
+    "length": 2,
+    "start": "2026-09-10",
+    "end": "2026-09-11"
   },
   "longest_streak": {
-    "length": 1
+    "length": 2,
+    "start": "2026-09-10",
+    "end": "2026-09-11"
   },
   "best_day": {
     "date": "2026-09-10",
     "count": 2
   },
+  "monthly": [
+    {
+      "month": "2025-09",
+      "total": 0
+    },
+    {
+      "month": "2025-10",
+      "total": 0
+    },
+    {
+      "month": "2025-11",
+      "total": 0
+    },
+    {
+      "month": "2025-12",
+      "total": 0
+    },
+    {
+      "month": "2026-01",
+      "total": 0
+    },
+    {
+      "month": "2026-02",
+      "total": 0
+    },
+    {
+      "month": "2026-03",
+      "total": 0
+    },
+    {
+      "month": "2026-04",
+      "total": 0
+    },
+    {
+      "month": "2026-05",
+      "total": 0
+    },
+    {
+      "month": "2026-06",
+      "total": 0
+    },
+    {
+      "month": "2026-07",
+      "total": 0
+    },
+    {
+      "month": "2026-08",
+      "total": 0
+    },
+    {
+      "month": "2026-09",
+      "total": 4
+    }
+  ],
   "days": [
     {
       "date": "2025-09-07",
@@ -1495,7 +1555,7 @@
     },
     {
       "date": "2026-09-11",
-      "count": 0
+      "count": 2
     }
   ]
 }
