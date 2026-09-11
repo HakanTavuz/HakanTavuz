@@ -1,0 +1,15 @@
+{
+  "username": "HakanTavuz",
+  "display_name": "Hakan",
+  "location": "Turkiye",
+  "role": "Developer · Builder",
+  "rows": [
+    ["Now", "Building products, shipping fast"],
+    ["Prev", "Full-stack / product work"],
+    ["Stack", "TypeScript · React · Node · Python"],
+    ["Highlights", "Animated SVG profile · live contrib graph"],
+    ["OS", "Windows 11"],
+    ["Editor", "Cursor"],
+    ["Status", "Open to collab"]
+  ]
+}
