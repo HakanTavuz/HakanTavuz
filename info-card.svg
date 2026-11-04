@@ -46,12 +46,12 @@
 <g transform="translate(28 264)" opacity="0">
 <animate attributeName="opacity" from="0" to="1" dur="0.38s" begin="1.54s" fill="freeze"/>
 <animateTransform attributeName="transform" type="translate" from="42 264" to="28 264" dur="0.38s" begin="1.54s" fill="freeze"/>
-<text font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13"><tspan fill="#7ee787">OS</tspan><tspan fill="#7d8590">  │  </tspan><tspan fill="#c9d1d9">Windows 11</tspan></text>
+<text font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13"><tspan fill="#7ee787">OS</tspan><tspan fill="#7d8590">  │  </tspan><tspan fill="#c9d1d9">Linux</tspan></text>
 </g>
 <g transform="translate(28 292)" opacity="0">
 <animate attributeName="opacity" from="0" to="1" dur="0.38s" begin="1.76s" fill="freeze"/>
 <animateTransform attributeName="transform" type="translate" from="42 292" to="28 292" dur="0.38s" begin="1.76s" fill="freeze"/>
-<text font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13"><tspan fill="#7ee787">Editor</tspan><tspan fill="#7d8590">  │  </tspan><tspan fill="#c9d1d9">Cursor</tspan></text>
+<text font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13"><tspan fill="#7ee787">Editor</tspan><tspan fill="#7d8590">  │  </tspan><tspan fill="#c9d1d9">Vs Code</tspan></text>
 </g>
 <g transform="translate(28 320)" opacity="0">
 <animate attributeName="opacity" from="0" to="1" dur="0.38s" begin="1.98s" fill="freeze"/>
