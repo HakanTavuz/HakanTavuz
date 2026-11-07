@@ -12,18 +12,24 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 from config import DISPLAY_NAME, prompt_user  # noqa: E402
 
-SRC = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, "..", "source-prepped.png")
+SRC = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, "..", "source-photo.jpg")
 OUT = sys.argv[2] if len(sys.argv) > 2 else os.path.join(HERE, "..", "portrait-ascii.svg")
 
-COLS = 100
-ROWS = 53
-CELL_W = 8
-CELL_H = 15
-RAMP = " .`:-=+*cs#%@"
+# Karakter hücresi dikdörtgen (dar+uzun) olduğundan sütun > satır tutulur ki yüz ezilmesin.
+COLS = 92
+ROWS = 64
+CELL_W = 7
+CELL_H = 13
+# Koyu arka plana açık mürekkep: AYDINLIK piksel = yoğun karakter, karanlık = boşluk (arka plana erir).
+RAMP = " .,:;irsXA253hMHGS#9B&@"
 
-CONTRAST = 1.05
-GAMMA = 1.18
-WHITE_FLOOR = 0.80
+CONTRAST = 1.15
+GAMMA = 0.92
+WHITE_FLOOR = 0.80  # (artık kullanılmıyor; geriye dönük uyum için duruyor)
+
+# Fotoğrafın yüzü dolduran kare kırpımı (gökyüzü/yol dışarıda kalır)
+CROP_L, CROP_R = 0.20, 0.80
+CROP_T, CROP_B = 0.15, 0.95
 
 PAD = 20
 TITLEBAR_H = 30
@@ -40,8 +46,8 @@ TITLE_TEXT = "#7d8590"
 INK = "#c9d1d9"
 CURSOR = "#c9d1d9"
 
-ROW_DUR = 0.11
-STAGGER = 0.11
+ROW_DUR = 0.09
+STAGGER = 0.07
 STATIC = bool(os.environ.get("STATIC"))
 
 
@@ -92,22 +98,32 @@ def procedural_grid() -> list[str]:
 
 
 def image_grid(path: str) -> list[str]:
-    from PIL import Image, ImageEnhance
+    from PIL import Image, ImageEnhance, ImageOps
 
     im = Image.open(path).convert("L")
+    w, h = im.size
+    # yüzü dolduran kare kırpım; selfie'nin gökyüzü/yolu dışarıda kalır
+    im = im.crop((int(w * CROP_L), int(h * CROP_T), int(w * CROP_R), int(h * CROP_B)))
+    im = ImageOps.autocontrast(im, cutoff=2)
     im = ImageEnhance.Contrast(im).enhance(CONTRAST)
     im = im.resize((COLS, ROWS), Image.LANCZOS)
     px = im.load()
     rows: list[str] = []
     for y in range(ROWS):
+        ny = (y / (ROWS - 1)) * 2 - 1
         chars: list[str] = []
         for x in range(COLS):
-            lum = px[x, y] / 255.0
-            lum = math.pow(lum, GAMMA)
-            if lum >= WHITE_FLOOR:
+            nx = (x / (COLS - 1)) * 2 - 1
+            # oval maske: yüz/kafa ovalinin dışı arka plana (boşluk) erir
+            d = (nx / 0.92) ** 2 + ((ny + 0.04) / 0.99) ** 2
+            if d > 1.0:
                 chars.append(" ")
                 continue
-            idx = int((1.0 - lum) * (len(RAMP) - 1) + 0.5)
+            lum = math.pow(px[x, y] / 255.0, GAMMA)
+            edge = min(1.0, (1.0 - d) / 0.18)   # kenarda yumuşak geçiş
+            lum = lum * (0.35 + 0.65 * edge)     # kenarları karart -> boşluğa eri
+            # AYDINLIK = yoğun karakter (koyu arka planda açık mürekkep)
+            idx = int(lum * (len(RAMP) - 1) + 0.5)
             idx = max(0, min(len(RAMP) - 1, idx))
             chars.append(RAMP[idx])
         rows.append("".join(chars))
